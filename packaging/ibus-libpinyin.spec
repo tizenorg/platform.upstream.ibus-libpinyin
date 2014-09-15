@@ -1,6 +1,6 @@
 Name:       ibus-libpinyin
 Version:    1.6.92
-Release:    1
+Release:    0
 Summary:    Intelligent Pinyin engine based on libpinyin for IBus
 License:    GPL-2.0+
 Group:      System/Libraries
@@ -17,9 +17,9 @@ BuildRequires:  libuuid-devel
 BuildRequires:  lua-devel
 BuildRequires:  ibus-devel >= 1.3
 BuildRequires:  libpinyin-devel > 0.6.90
+BuildRequires:  fdupes
 
 # Requires(post): sqlite
-
 Requires:   ibus >= 1.2.0
 Requires:   libpinyin > 0.6.90
 
@@ -30,27 +30,28 @@ It includes a Chinese Pinyin input method and a Chinese ZhuYin (Bopomofo) input 
 %setup -q
 cp %{SOURCE1001} .
 
-
 %build
-%configure --disable-static \
-           --disable-boost
+%reconfigure --disable-static \
+             --disable-boost
 
 # make -C po update-gmo
-make %{?_smp_mflags}
+%__make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make DESTDIR=${RPM_BUILD_ROOT} install
+rm -rf %{buildroot}
+%__make DESTDIR=%{buildroot} install
 
 %find_lang %{name}
+%fdupes %{buildroot}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING README
+%license COPYING
+%doc AUTHORS README
 %{_datadir}/applications/*.desktop
 %{_libexecdir}/ibus-engine-libpinyin
 %{_libexecdir}/ibus-setup-libpinyin
