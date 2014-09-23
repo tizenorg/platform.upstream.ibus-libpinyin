@@ -39,10 +39,10 @@ cp %{SOURCE1001} .
 
 %install
 rm -rf %{buildroot}
-%__make DESTDIR=%{buildroot} install
+%make_install DESTDIR=%{buildroot}
 
 %find_lang %{name}
-%fdupes %{buildroot}
+%fdupes %{buildroot}%{_datadir}
 
 %clean
 rm -rf %{buildroot}
@@ -60,6 +60,5 @@ rm -rf %{buildroot}
 %{_datadir}/ibus-libpinyin/setup
 %{_datadir}/ibus-libpinyin/*.lua
 %{_datadir}/ibus-libpinyin/db/*.db
-%dir %{_datadir}/ibus-libpinyin
-%dir %{_datadir}/ibus-libpinyin/db
 %{_datadir}/ibus/component/*
+
